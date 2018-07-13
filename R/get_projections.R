@@ -111,9 +111,9 @@ get_projections <- function() {
   projections <- rbind(projections, merge(big,te_fp,all.y=T))
   projections[is.na(projections)] <- 0
 
-  draftdata <- projected_points(projections)
-  draftdata$Player <- gsub(" $","", draftdata$Player, perl=T)
+  # draftdata <- projected_points(projections)
+  projections$Player <- gsub(" $","", projections$Player, perl=T)
 
-  draftdata <- draftdata[order(draftdata$Rank),]
-  return(draftdata)
+  # draftdata <- draftdata[order(draftdata$Rank),]
+  return(projections)
 }

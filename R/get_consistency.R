@@ -1,11 +1,13 @@
 
 #' @export
 get_consistency <- function() {
-  dat <- read.csv(file = "data/gamelogs.csv", header = T, stringsAsFactors = F)
+  dat <- read.csv(file = "/Users/colin/Documents/GitHub/FantasyFootballData/data/gamelogs/2017.csv", header = T, stringsAsFactors = F)
+  dat <- dat %>% filter(!is.na(game_num) & game_num <= 16)
+  dat[is.na(dat)] <- 0
+  dat <- dat[order(dat$Player, dat$game_num),]
   dat$Player[dat$Player == "Odell Beckham"] <- "Odell Beckham Jr."
-  for(i in 1:nrow(dat)) {
-    dat$pts[i] <- weekly_fantasy_points(dat[i,])
-  }
+
+  dat$pts <- weekly_fantasy_points(dat)
 
   dat$starts <- 0
   dat$top <- 0
@@ -15,25 +17,25 @@ get_consistency <- function() {
   wr <- data.frame()
   te <- data.frame()
   for(i in 1:16) {
-    qbs <- dat %>% filter(Pos == "QB") %>% filter(Week == i)
+    qbs <- dat %>% filter(Pos == "QB") %>% filter(game_num == i)
     qbs <- qbs[order(-qbs$pts),]
     qbs$top[c(1:3)] <- qbs$top[c(1:3)] + 1
     qbs$starts[c(1:12)] <- qbs$starts[c(1:12)] + 1
     qb <- rbind(qb, qbs)
 
-    rbs <- dat %>% filter(Pos == "RB") %>% filter(Week == i)
+    rbs <- dat %>% filter(Pos == "RB") %>% filter(game_num == i)
     rbs <- rbs[order(-rbs$pts),]
     rbs$top[c(1:6)] <- rbs$top[c(1:3)] + 1
     rbs$starts[c(1:24)] <- rbs$starts[c(1:12)] + 1
     rb <- rbind(rb, rbs)
 
-    wrs <- dat %>% filter(Pos == "WR") %>% filter(Week == i)
+    wrs <- dat %>% filter(Pos == "WR") %>% filter(game_num == i)
     wrs <- wrs[order(-wrs$pts),]
     wrs$top[c(1:9)] <- wrs$top[c(1:3)] + 1
     wrs$starts[c(1:36)] <- wrs$starts[c(1:12)] + 1
     wr <- rbind(wr, wrs)
 
-    tes <- dat %>% filter(Pos == "TE") %>% filter(Week == i)
+    tes <- dat %>% filter(Pos == "TE") %>% filter(game_num == i)
     tes <- tes[order(-tes$pts),]
     tes$top[c(1:3)] <- tes$top[c(1:3)] + 1
     tes$starts[c(1:12)] <- tes$starts[c(1:12)] + 1
@@ -41,7 +43,7 @@ get_consistency <- function() {
   }
 
   dat <- rbind(qb, rb, wr, te)
-  dat <- dat[order(dat$I, dat$Week),]
+  dat <- dat[order(dat$Player, dat$game_num),]
   rownames(dat) <- c(1:nrow(dat))
 
   b <- dat %>%

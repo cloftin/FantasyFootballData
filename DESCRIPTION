@@ -16,4 +16,5 @@ Depends: plyr,
          tidyr,
          XML,
          stringi
+Imports: dplyr
 RoxygenNote: 6.0.1
