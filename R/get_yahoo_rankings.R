@@ -25,9 +25,9 @@ get_yahoo_rankings <- function() {
   }))
 
   yahoorankings <- yahoorankings %>% filter(Pos != "DST", Pos != "K")
-  yahoorankings <- yahoorankings %>% select(-PosRank, -Team, -Pos)
+  yahoorankings <- yahoorankings %>% select(-PosRank, -Pos)
 
-  cn <- DBI::dbConnect(RSQLite::SQLite(), "data/YahooRankings.sqlite3")
+  cn <- DBI::dbConnect(RSQLite::SQLite(), "/Users/colin/Documents/GitHub/FantasyFootballData/data/YahooRankings.sqlite3")
 
   t <- tryCatch({DBI::dbGetQuery(cn, "Select * from YahooRankings")},
                 error = function(e) {
@@ -47,7 +47,8 @@ get_yahoo_rankings <- function() {
     }
   }
 
-  t <- merge(t, yahoorankings, by = "Player")
+  t <- merge(t, yahoorankings, by = c("Player", "Team"))
+  t <- t %>% select(Player, Team, colnames(t)[c(2:(ncol(t) - 1))])
   t <- t[order(t[,ncol(t)]),]
 
   maxdate <- colnames(t)[ncol(t)]
@@ -58,9 +59,10 @@ get_yahoo_rankings <- function() {
       DBI::dbSendQuery(cn, "Drop Table YahooRankings")
       DBI::dbWriteTable(cn, "YahooRankings", t %>% select(-match))
     }
+    t$match <- NULL
 
   }
 
 
-  return(yahoorankings)
+  return(t)
 }
