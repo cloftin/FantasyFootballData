@@ -48,7 +48,7 @@ get_yahoo_rankings <- function() {
   }
 
   t <- merge(t, yahoorankings, by = c("Player", "Team"))
-  t <- t %>% select(Player, Team, colnames(t)[c(2:(ncol(t) - 1))])
+  t <- t %>% select(Player, Team, colnames(t)[c(3:(ncol(t) - 0))])
   t <- t[order(t[,ncol(t)]),]
 
   maxdate <- colnames(t)[ncol(t)]
