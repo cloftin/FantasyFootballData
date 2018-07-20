@@ -48,7 +48,7 @@ get_consistency <- function() {
 
   b <- dat %>%
     group_by(Player) %>%
-    mutate(starts = sum(starts), top = sum(top), pts_g = mean(pts), wk_sd = sd(pts), games = n()) %>%
+    dplyr::mutate(starts = sum(starts), top = sum(top), pts_g = mean(pts), wk_sd = sd(pts), games = n()) %>%
     data.frame() %>%
     select(Player, Pos, games, starts, top, pts_g, wk_sd) %>% unique()
 
