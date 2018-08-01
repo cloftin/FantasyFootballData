@@ -52,7 +52,7 @@ get_yahoo_rankings <- function() {
   t <- t[order(t[,ncol(t)]),]
 
   maxdate <- colnames(t)[ncol(t)]
-  if(Sys.Date() > as.Date(paste0("2018/", maxdate), "%Y/%m/%d")) {
+  if(Sys.Date() >= as.Date(paste0("2018/", maxdate), "%Y/%m/%d")) {
 
     t$match <- t[,ncol(t) - 1] == t[,ncol(t)]
     if(FALSE %in% t$match) {
