@@ -39,7 +39,7 @@ get_projections <- function() {
     x[1] <- strsplit(strsplit(x[1], split = "player-name\\\">")[[1]][2], "</a>")[[1]][1]
     x <- gsub("<td class=\\\"center\\\">|</td>", "", x[c(1:9)])
     x <- as.data.frame(rbind(x))
-    x <- x %>% select(V1, V3, V4, V5, V6, V7, V8)
+    x <- x %>% select(V1, V3, V4, V6, V7, V8, V5)
     for(i in 2:ncol(x)) {
       x[,i] <- as.numeric(gsub(",", "", x[,i]))
     }
@@ -63,14 +63,14 @@ get_projections <- function() {
     x[1] <- strsplit(strsplit(x[1], split = "player-name\\\">")[[1]][2], "</a>")[[1]][1]
     x <- gsub("<td class=\\\"center\\\">|</td>", "", x[c(1:9)])
     x <- as.data.frame(rbind(x))
-    x <- x %>% select(V1, V3, V4, V5, V6, V7, V8)
+    x <- x %>% select(V1, V2, V3, V4, V6, V7, V8)
     for(i in 2:ncol(x)) {
       x[,i] <- as.numeric(gsub(",", "", x[,i]))
     }
     x$Team <- team
     return(x)
   })
-  colnames(wr_fp) <- c("Player", "RushYds", "RushTDs", "Receptions", "RecYds", "RecTDs", "Fumbles", "Team")
+  colnames(wr_fp) <- c("Player", "Receptions", "RecYds", "RecTDs", "RushYds", "RushTDs", "Fumbles", "Team")
   wr_fp$Pos <- "WR"
   # wr_fp <- merge(wr_fp, yahoorankings, all.x = T)
 

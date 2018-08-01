@@ -28,7 +28,7 @@ download_gamelogs <- function(year = 2017) {
       b[b == ""] <- 0
       return(b)
     })
-    a$link <- x
+    if(nrow(a) > 0) { a$link <- x }
     return(a)
   })
 
