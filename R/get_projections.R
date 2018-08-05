@@ -14,6 +14,10 @@ get_projections <- function() {
     team <- strsplit(strsplit(strsplit(x[1], split = "player-name\\\">")[[1]][2], "</a> ")[[1]][2], " ")[[1]][1]
     x[1] <- strsplit(strsplit(x[1], split = "player-name\\\">")[[1]][2], "</a>")[[1]][1]
     x <- gsub("<td class=\\\"center\\\">|</td>", "", x[c(1:11)])
+    w <- grep("data-sort-value", x)
+    if(length(w) > 0) {
+      x[w] <- strsplit(x[w], ">")[[1]][2]
+    }
     x <- as.data.frame(rbind(x))
     x <- x %>% select(V1, V4, V5, V6, V8, V9, V10)
     for(i in 2:ncol(x)) {
@@ -39,7 +43,7 @@ get_projections <- function() {
     x[1] <- strsplit(strsplit(x[1], split = "player-name\\\">")[[1]][2], "</a>")[[1]][1]
     x <- gsub("<td class=\\\"center\\\">|</td>", "", x[c(1:9)])
     x <- as.data.frame(rbind(x))
-    x <- x %>% select(V1, V3, V4, V6, V7, V8, V5)
+    x <- x %>% select(V1, V3, V4, V5, V6, V7, V8)
     for(i in 2:ncol(x)) {
       x[,i] <- as.numeric(gsub(",", "", x[,i]))
     }
