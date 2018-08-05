@@ -7,11 +7,14 @@ download_gamelogs <- function(year = 2017) {
   player <- unlist(lapply(t, function(x) {
     return(strsplit(strsplit(x, ".htm\\\">")[[1]][2], "<")[[1]][1])
   }))
+  position <- unlist(lapply(t, function(x) {
+    return(strsplit(strsplit(strsplit(x, "data-stat=\"fantasy_pos\"")[[1]][2], ">")[[1]][2], "<")[[1]][1])
+  }))
   link <- unlist(lapply(t, function(x) {
     return(paste0("https://www.pro-football-reference.com", strsplit(strsplit(x, "a href=\"")[[1]][2], ".htm")[[1]][1], "/gamelog/", year))
   }))
 
-  t <- data.frame(cbind(player, link), stringsAsFactors = F)
+  t <- data.frame(cbind(player, position, link), stringsAsFactors = F)
 
   gamelogs <- plyr::ldply(t$link, function(x) {
     a <- readLines(x)
