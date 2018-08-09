@@ -1,7 +1,7 @@
 
 
-projected_points <- function(x, passyds = 50, passtds = 5, ints = -2, rushyds = 20, rushtds = 6,
-                    recs = .5, recyds = 20, rectds = 6, twopts = 2, fumbles = -1,
+projected_points <- function(x, passyds = 25, passtds = 5, ints = -2, rushyds = 10, rushtds = 6,
+                    recs = .5, recyds = 10, rectds = 6, twopts = 2, fumbles = -1,
                     numofqb = 17, numofrb = 39, numofwr = 48, numofte = 13) {
 
   x <- as.data.frame(x)
@@ -44,7 +44,7 @@ projected_points <- function(x, passyds = 50, passtds = 5, ints = -2, rushyds = 
   toreturn[,7] <- toreturn[,6]
   toreturn[,6] <- c(1:nrow(toreturn))
 
-  yahoorankings <- get_yahoo_rankings()
+  yahoorankings <- FantasyFootballData::get_yahoo_rankings()
   yahoorankings <- yahoorankings[,c(1,ncol(yahoorankings))]
   colnames(yahoorankings) <- c("Player", "YRank")
 
