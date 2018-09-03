@@ -26,6 +26,8 @@ espn_projections <- function() {
   dat$TwoPts <- 0
   dat$Fumbles <- 0
 
+  dat$Player <- gsub(" II", "", dat$Player)
+
   projected_points(dat)
   return(dat)
 
