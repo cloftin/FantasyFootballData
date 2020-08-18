@@ -17,4 +17,4 @@ Depends: plyr,
          XML,
          stringi
 Imports: dplyr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.0

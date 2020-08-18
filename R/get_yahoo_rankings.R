@@ -42,6 +42,7 @@ get_yahoo_rankings <- function(update = FALSE) {
     ranks$match <- NULL
   }
 
+  ranks$Player <- gsub("Melvin Gordon III", "Melvin Gordon", ranks$Player)
   ranks$Player <- gsub(" II", "", ranks$Player)
 
   return(ranks)
