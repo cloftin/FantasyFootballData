@@ -1,6 +1,6 @@
 
 #' @export
-download_gamelogs <- function(year = 2017) {
+download_gamelogs <- function(year = 2019) {
 
   t <- readLines(paste0("https://www.pro-football-reference.com/years/", year, "/fantasy.htm"))
   t <- t[grep("<tr ><th scope=\"row\" class=\"right \" data-stat=\"ranker\"", t)]
@@ -28,8 +28,10 @@ download_gamelogs <- function(year = 2017) {
       b <- data.frame(matrix(unlist(b), nrow=1, byrow=T))
       colnames(b) <- stats
       b <- b %>% select(-age, -team, -game_location, -opp, -game_result)
-      b[b == ""] <- 0
-      return(b)
+      if(b$game_num[1] != "") {
+        b[b == ""] <- 0
+        return(b)
+      }
     })
     if(nrow(a) > 0) { a$link <- x }
     return(a)
@@ -38,6 +40,7 @@ download_gamelogs <- function(year = 2017) {
   gamelogs <- merge(t, gamelogs, by = "link")
   gamelogs$link <- NULL
   gamelogs$year <- year
+  gamelogs$player <- stringi::stri_trim(gamelogs$player)
   write.csv(gamelogs, file = paste0("data/gamelogs/", year, ".csv"), row.names = F)
 
 }

@@ -47,9 +47,14 @@ projected_points <- function(x, passyds = 25, passtds = 5, ints = -2, rushyds = 
   yahoorankings <- FantasyFootballData::get_yahoo_rankings()
   yahoorankings <- yahoorankings[,c(1,ncol(yahoorankings))]
   colnames(yahoorankings) <- c("Player", "YRank")
+  yahoorankings$Player <- gsub(" Jr.| V| II", "", yahoorankings$Player)
+  yahoorankings <- yahoorankings %>% filter(YRank > 0)
 
   toreturn[,1] <- gsub(" $","", toreturn[,1], perl=T)
   colnames(toreturn) = c("Player","Pos","Team","Points","VOR","Rank","PosRank")
+  toreturn$Player <- gsub(" Jr.| V| II", "", toreturn$Player)
+  toreturn$Player <- gsub("Devante Parker", "DeVante Parker", toreturn$Player)
+
   temp <- toreturn
   toreturn <- NULL
   toreturn <- merge(temp,yahoorankings)

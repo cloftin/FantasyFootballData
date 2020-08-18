@@ -3,7 +3,7 @@
 get_yahoo_rankings <- function(update = FALSE) {
   options(stringsAsFactors = FALSE)
 
-  ranks <- read.csv(file = "/Users/colin/Documents/GitHub/FantasyFootballData/data/yahoo_ranks.csv", header = T, stringsAsFactors = F)
+  ranks <- read.csv(file = "/Users/colin/Documents/GitHub/YahooFantasyAPI/data/yahoo_ranks.csv", header = T, stringsAsFactors = F)
   ranks <- ranks[order(ranks[,ncol(ranks)]),]
   colnames(ranks) <- gsub("X", "", colnames(ranks))
   colnames(ranks) <- gsub("\\.", "/", colnames(ranks))
@@ -37,10 +37,13 @@ get_yahoo_rankings <- function(update = FALSE) {
     ranks$match <- ranks[,ncol(ranks) - 1] == ranks[,ncol(ranks)]
 
     if(FALSE %in% ranks$match & ncol(ranks) > 4) {
-      write.csv(ranks %>% select(-match), file = "/Users/colin/Documents/GitHub/FantasyFootballData/data/yahoo_ranks.csv", row.names = F)
+      write.csv(ranks %>% select(-match), file = "/Users/colin/Documents/GitHub/YahooFantasyAPI/data/yahoo_ranks.csv", row.names = F)
     }
     ranks$match <- NULL
   }
+
+  ranks$Player <- gsub("Melvin Gordon III", "Melvin Gordon", ranks$Player)
+  ranks$Player <- gsub(" II", "", ranks$Player)
 
   return(ranks)
 }

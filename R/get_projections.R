@@ -117,6 +117,7 @@ get_projections <- function() {
 
   # draftdata <- projected_points(projections)
   projections$Player <- gsub(" $","", projections$Player, perl=T)
+  projections$Player <- gsub("Mitch Trubisky", "Mitchell Trubisky", projections$Player, perl = T)
 
   # draftdata <- draftdata[order(draftdata$Rank),]
   return(projections)

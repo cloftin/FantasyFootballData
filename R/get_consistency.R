@@ -1,7 +1,7 @@
 
 #' @export
 get_consistency <- function() {
-  dat <- read.csv(file = "/Users/colin/Documents/GitHub/FantasyFootballData/data/gamelogs/2017.csv", header = T, stringsAsFactors = F)
+  dat <- read.csv(file = "/Users/colin/Documents/GitHub/FantasyFootballData/data/gamelogs/2018.csv", header = T, stringsAsFactors = F)
   dat <- dat %>% filter(!is.na(game_num) & game_num <= 16)
   dat[is.na(dat)] <- 0
   dat <- dat[order(dat$player, dat$game_num),]
