@@ -12,7 +12,7 @@ get_yahoo_rankings <- function(update = FALSE) {
     YahooFantasyAPI::check_token()
     # YahooFantasyAPI::get_token(readLines("yahoocreds.txt")[1], readLines("yahoocreds.txt")[2])
 
-    yahoorankings <- YahooFantasyAPI::get_player_list(gameid = "380", leagueid = "121038", numPlayers = 300)
+    yahoorankings <- YahooFantasyAPI::get_player_list(gameid = "399", leagueid = "659062", numPlayers = 300)
     yahoorankings$name <- gsub(" II", "", yahoorankings$name)
     yahoorankings$name <- gsub(" Jr.| Sr.", "", yahoorankings$name)
     yahoorankings$name <- gsub(" V", "", yahoorankings$name)
