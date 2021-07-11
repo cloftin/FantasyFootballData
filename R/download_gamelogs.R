@@ -1,6 +1,6 @@
 
 #' @export
-download_gamelogs <- function(year = 2019) {
+download_gamelogs <- function(year = 2020) {
 
   t <- readLines(paste0("https://www.pro-football-reference.com/years/", year, "/fantasy.htm"))
   t <- t[grep("<tr ><th scope=\"row\" class=\"right \" data-stat=\"ranker\"", t)]
