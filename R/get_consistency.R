@@ -1,8 +1,8 @@
 
 #' @export
 get_consistency <- function() {
-  dat <- read.csv(file = "data/gamelogs/2019.csv", header = T, stringsAsFactors = F)
-  dat <- dat %>% filter(!is.na(game_num) & game_num <= 16)
+  dat <- read.csv(file = "data/gamelogs/2020.csv", header = T, stringsAsFactors = F)
+  dat <- dat %>% filter(!is.na(game_num) & game_num <= 16 & offense > 0)
   dat[is.na(dat)] <- 0
   dat <- dat[order(dat$player, dat$game_num),]
   dat$player[dat$player == "Odell Beckham"] <- "Odell Beckham Jr."
@@ -57,7 +57,7 @@ get_consistency <- function() {
 
   b$cons <- b$wk_sd / b$pts_g
   # b$met <- log(((1/b$cons) ^ (20*b$pts_g)) * (100/(1-b$top_pct)) * (1/(1.2-b$start_pct)))
-  b$met <- (30*b$pts_g + (20/(1-b$top_pct)) + (1/1.2-b$start_pct))# / b$cons)
+  b$met <- (30*b$pts_g + (20/(1.2-b$top_pct)) + (1/1.2-b$start_pct))# / b$cons)
 
   return(b)
 
