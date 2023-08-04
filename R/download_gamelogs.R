@@ -1,6 +1,6 @@
 
 #' @export
-download_gamelogs <- function(year = 2020) {
+download_gamelogs <- function(year = 2022) {
 
   t <- readLines(paste0("https://www.pro-football-reference.com/years/", year, "/fantasy.htm"))
   t <- t[grep("<tr ><th scope=\"row\" class=\"right \" data-stat=\"ranker\"", t)]
@@ -16,8 +16,13 @@ download_gamelogs <- function(year = 2020) {
 
   t <- data.frame(cbind(player, position, link), stringsAsFactors = F)
 
-  gamelogs <- plyr::ldply(t$link, function(x) {
-    a <- readLines(x)
+  Sys.sleep(60)
+
+  gamelogs <- data.frame()
+  for(i in 1:nrow(t)) {
+    print(i/nrow(t))
+    Sys.sleep(6)
+    a <- readLines(t$link[i])
     a <- a[grep("<td class=\"left \" data-stat=\"game_date\" >", a)]
     a <- strsplit(a, "data-stat=\"")
     a <- plyr::ldply(a, function(y) {
@@ -33,9 +38,9 @@ download_gamelogs <- function(year = 2020) {
         return(b)
       }
     })
-    if(nrow(a) > 0) { a$link <- x }
-    return(a)
-  })
+    if(nrow(a) > 0) { a$link <- t$link[i] }
+    gamelogs <- data.table::rbindlist(list(gamelogs, a), fill = TRUE)
+  }
 
   gamelogs <- merge(t, gamelogs, by = "link")
   gamelogs$link <- NULL
